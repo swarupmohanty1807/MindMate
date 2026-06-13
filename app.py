@@ -9,7 +9,7 @@ CORS(app)
 
 client = OpenAI(
 base_url="https://openrouter.ai/api/v1",
-    api_key="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"
+    api_key="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"
 )
 
 # LOGIN PAGE
