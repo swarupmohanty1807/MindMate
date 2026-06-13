@@ -1,0 +1,1845 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>MindMate Home</title>
+    <title>{{name}}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <div class="home-container">
+
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+
+            <div class="logo">
+
+                <div class="home-logo">
+
+                    <img src="https://cdn-icons-png.flaticon.com/512/4616/4616734.png">
+
+                </div>
+
+                <div>
+
+                    <h2>MindMate</h2>
+
+                    <p>Your Mental Wellness Companion</p>
+
+                </div>
+
+            </div>
+            <div class="menu">
+
+                <a href="#" class="active">🏠 Home</a>
+
+                <a href="/chat?name={{ name }}">🤖 Chat with AI</a>
+
+                <a href="#">🧘 Wellness Tools</a>
+                <a href="#" onclick="openLoginInfo()">👤 Login Info</a>
+                <a href="#" onclick="openMoodReport()">📄 Daily Mood Report</a>
+                <div class="settings-menu">
+
+                    <a href="#">
+                        ⚙️ Settings
+                    </a>
+
+                    <div class="settings-dropdown">
+
+                        <a href="#" onclick="saveChat()">
+
+                            💾 Save Chat
+
+                        </a>
+
+                        <a href="#" onclick="clearChat()">
+
+                            🗑️ Clear Chat
+
+                        </a>
+
+                        <a href="/" onclick="return confirmLogout()">
+
+                            🚪 Logout
+
+                        </a>
+
+                        <a href="#" onclick="openExitPopup()">
+
+                            ❌ Exit
+
+                        </a>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+
+            <!-- TOP SECTION -->
+            <div class="top-bar">
+
+                <div>
+
+                    <h1 id="greeting-text">
+                        Hello 🌸
+                    </h1>
+
+                    <p>
+                        How are you feeling today?
+                    </p>
+
+                </div>
+
+                <div class="profile-section">
+                    <img id="profile-photo" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                        class="profile-pic">
+                </div>
+
+            </div>
+
+            <!-- MOOD CARDS -->
+            <div class="mood-cards">
+
+                <div class="mood happy" onclick= 'setMood("😊 Happy")'>
+                    😊
+                    <span>Happy</span>
+
+                </div>
+
+                <div class="mood okay" onclick= 'setMood("😐 Okay")'>
+
+                    😐
+                    <span>Okay</span>
+
+                </div>
+
+                <div class="mood sad" onclick= 'setMood("😔 Sad")'>
+
+                    😔
+                    <span>Sad</span>
+
+                </div>
+
+                <div class="mood anxious" onclick= 'setMood("😰 Anxious")'>
+
+                    😰
+                    <span>Anxious</span>
+
+                </div>
+
+                <div class="mood stressed" onclick= 'setMood("😫 Stressed")'>
+
+                    😫
+                    <span>Stressed</span>
+
+                </div>
+
+            </div>
+            <!-- MAIN AI CARD -->
+            <div class="ai-card">
+
+                <img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png" class="ai-robot">
+
+                <div class="ai-text">
+
+                    <h2>
+                        Hi! I'm MindMate 🤖
+                    </h2>
+
+                    <p>
+                        Your AI companion to support your mental well-being.
+                    </p>
+
+                    <a href="/chat?name={{ name }}" class="chat-btn">
+                        Chat with AI →
+                    </a>
+
+                </div>
+
+            </div>
+
+            <h2 class="summary-heading">
+                Daily Summary 📅
+            </h2>
+            <!-- DAILY SUMMARY -->
+
+            <div class="summary-section">
+
+                <div class="summary-card">
+
+                    <h3>😊 Mood Score</h3>
+
+                    <p id="mood-score">
+                        8/10
+                    </p>
+
+                </div>
+
+                <div class="summary-card">
+
+                    <h3>😴 Sleep</h3>
+
+                    <p id="sleep-hours">
+                        7.5 Hours
+                    </p>
+
+                </div>
+
+                <div class="summary-card">
+
+                    <h3>😰 Stress</h3>
+
+                    <p id="stress-level">
+                        Moderate
+                    </p>
+
+                </div>
+
+                <div class="summary-card">
+
+                    <h3>🎯 Daily Goal</h3>
+
+                    <p id="daily-goal">
+                        Stay Positive
+                    </p>
+                </div>
+            </div>
+            <!-- TOP INFO ROW -->
+            <div class="top-info-row">
+
+                <!-- TODAY MOOD -->
+
+                <div class="info-box">
+
+                    <h2>
+                        Today's Mood 💭
+                    </h2>
+
+                    <p id="today-mood">
+                        No mood selected
+                    </p>
+
+                </div>
+                 <!-- MENTAL WELLNESS SCORE -->
+
+<div class="wellness-score-card no-box">
+
+    <h2>Mental Wellness Score 🌿</h2>
+
+    <div class="progress-container">
+
+        <div class="progress-bar"
+             id="wellnessBar">
+        </div>
+
+    </div>
+
+    <h3 id="scoreText">
+        70%
+    </h3>
+
+</div>
+
+                <!-- MOOD INSIGHT -->
+
+                <div class="info-box">
+
+                    <h2>
+                        Mood Insight 🧠
+                    </h2>
+
+                    <p id="mood-insight">
+                        Select a mood to get insight.
+                    </p>
+
+                </div>
+            </div>
+           
+            <!-- WELLNESS TOOLS -->
+
+            <div class="wellness-section">
+
+                <h2>
+                    Wellness Tools 🌿
+                </h2>
+
+                <div class="tools-container">
+
+                    <!-- MEDITATION -->
+                    <div class="tool-card" onclick="openMeditation()">
+
+                        <div class="tool-icon">
+                            🧘
+                        </div>
+
+                        <h3>Meditation</h3>
+
+                        <p>
+                            Relax your mind with guided meditation.
+                        </p>
+
+                    </div>
+                    <!-- MUSIC -->
+                    <div class="tool-card" onclick="openMusic()">
+
+                        <div class="tool-icon">
+                            🎵
+                        </div>
+
+                        <h3>Relax Music</h3>
+
+                        <p>
+                            Listen to peaceful and calming music.
+                        </p>
+
+                    </div>
+                    <!-- JOURNAL -->
+                    <div class="tool-card" onclick="openJournal()">
+
+                        <div class="tool-icon">
+                            📖
+                        </div>
+
+                        <h3>Journal</h3>
+
+                        <p>
+                            Write your thoughts and emotions safely.
+                        </p>
+
+                    </div>
+                    <!-- STUDY STRESS -->
+                    <div class="tool-card" onclick="openStudyRelief()">
+
+                        <div class="tool-icon">
+                            📚
+                        </div>
+
+                        <h3>Study Relief</h3>
+
+                        <p>
+                            Reduce academic stress with helpful tips.
+                        </p>
+
+                    </div>
+                    <!-- BREATHING -->
+
+                    <div class="tool-card" onclick="openBreathing()">
+
+                        <div class="tool-icon">
+                            🌬️
+                        </div>
+
+                        <h3>Breathing</h3>
+
+                        <p>
+                            Calm your stress with breathing exercises.
+                        </p>
+
+                    </div>
+                    <!-- MOTIVATION -->
+                    <div class="tool-card" onclick="openMotivation()">
+
+                        <div class="tool-icon">
+                            💡
+                        </div>
+
+                        <h3>Motivation</h3>
+
+                        <p>
+                            Stay inspired and mentally strong every day.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+                <script>
+
+                    const savedPhoto =
+                        localStorage.getItem("profilePhoto");
+                    if (savedPhoto) {
+                        document.getElementById(
+                            "profile-photo"
+                        ).src = savedPhoto;
+                    }
+                    /* LOAD USERNAME */
+                    const savedUsername =
+                        localStorage.getItem(
+                            "mindmateUser"
+                        );
+                    if (savedUsername) {
+                        document.getElementById(
+                            "greeting-text"
+                        ).innerHTML =
+                            "Hello, " +
+                            savedUsername +
+                            " 🌸";
+                    }
+                </script>
+                <script>
+
+                    /* LOAD PROFILE PHOTO */
+
+                    const savedPhoto2 =
+                        localStorage.getItem("profilePhoto");
+
+                    if (savedPhoto2) {
+
+                        document.getElementById(
+                            "home-profile-pic"
+                        ).src = savedPhoto2;
+                    }
+
+                    /* LOAD OTHER USER DATA */
+
+                    const savedAge =
+                        localStorage.getItem("userAge");
+
+                    const savedPhone =
+                        localStorage.getItem("userPhone");
+
+                    const savedEmail =
+                        localStorage.getItem("userEmail");
+
+                    if (savedAge) {
+
+                        document.getElementById(
+                            "profile-age"
+                        ).innerHTML =
+                            "Age: " + savedAge;
+                    }
+
+                    if (savedPhone) {
+
+                        document.getElementById(
+                            "profile-phone"
+                        ).innerHTML =
+                            "Phone: " + savedPhone;
+                    }
+
+                    if (savedEmail) {
+
+                        document.getElementById(
+                            "profile-email"
+                        ).innerHTML =
+                            "Email: " + savedEmail;
+                    }
+
+                </script>
+                <!-- BREATHING POPUP -->
+
+                <div id="breathing-popup" class="popup-overlay">
+
+                    <div class="popup-box">
+
+                        <h2>
+                            🌬️ Breathing Exercise
+                        </h2>
+
+                        <div class="breathing-circle" id="breathing-circle">
+
+                            Breathe
+
+                        </div>
+
+                        <p id="breathing-text">
+                            Inhale...
+                        </p>
+
+                        <button onclick="closeBreathing()">
+                            Close
+                        </button>
+
+                    </div>
+
+                </div>
+                <script>
+
+                    /* OPEN POPUP */
+
+                    function openBreathing() {
+
+                        document.getElementById(
+                            "breathing-popup"
+                        ).style.display = "flex";
+                    }
+
+                    /* CLOSE POPUP */
+
+                    function closeBreathing() {
+
+                        document.getElementById(
+                            "breathing-popup"
+                        ).style.display = "none";
+                    }
+
+                    /* BREATHING TEXT */
+
+                    const breathingText =
+                        document.getElementById(
+                            "breathing-text"
+                        );
+
+                    setInterval(function () {
+
+                        if (breathingText.innerHTML === "Inhale...") {
+
+                            breathingText.innerHTML =
+                                "Exhale...";
+                        }
+
+                        else {
+
+                            breathingText.innerHTML =
+                                "Inhale...";
+                        }
+
+                    }, 4000);
+                    /* OPEN MUSIC */
+
+                    function openMusic() {
+
+                        document.getElementById(
+                            "music-popup"
+                        ).style.display = "flex";
+                    }
+
+                    /* CLOSE MUSIC */
+
+                    function closeMusic() {
+
+                        document.getElementById(
+                            "music-popup"
+                        ).style.display = "none";
+                    }
+                    /* OPEN JOURNAL */
+
+                    function openJournal() {
+
+                        document.getElementById(
+                            "journal-popup"
+                        ).style.display = "flex";
+
+                        const savedJournal =
+                            localStorage.getItem("mindmateJournal");
+
+                        if (savedJournal) {
+
+                            document.getElementById(
+                                "journal-text"
+                            ).value = savedJournal;
+                        }
+                    }
+
+                    /* CLOSE JOURNAL */
+
+                    function closeJournal() {
+
+                        document.getElementById(
+                            "journal-popup"
+                        ).style.display = "none";
+                    }
+
+                    /* SAVE JOURNAL */
+
+                    function saveJournal() {
+
+                        const journalText =
+                            document.getElementById(
+                                "journal-text"
+                            ).value;
+
+                        localStorage.setItem(
+                            "mindmateJournal",
+                            journalText
+                        );
+
+                        alert(
+                            "Journal Saved Successfully ✅"
+                        );
+                    }
+
+                    /* LOAD SAVED MOOD */
+
+                    const savedMood1 =
+                        localStorage.getItem(
+                            "todayMood"
+                        );
+
+                    if (savedMood1) {
+
+                        document.getElementById(
+                            "today-mood"
+                        ).innerHTML = savedMood1;
+                    }
+                    /* OPEN MEDITATION */
+
+                    function openMeditation() {
+
+                        document.getElementById(
+                            "meditation-popup"
+                        ).style.display = "flex";
+
+                        startMeditation();
+                    }
+
+                    /* START TIMER */
+                    let meditationInterval;
+                    /* START MEDITATION */
+
+                    function startMeditation() {
+
+                        clearInterval(meditationInterval);
+
+                        let time = 120;
+
+                        const timer =
+                            document.getElementById(
+                                "meditation-timer"
+                            );
+
+                        const text =
+                            document.getElementById(
+                                "meditation-text"
+                            );
+
+                        const messages = [
+
+                            "Relax your shoulders...",
+
+                            "Take a deep breath...",
+
+                            "Focus on the present moment...",
+
+                            "Let your thoughts calm down...",
+
+                            "You are safe and peaceful..."
+                        ];
+
+                        let msgIndex = 0;
+
+                        meditationInterval = setInterval(function () {
+
+                            const minutes =
+                                Math.floor(time / 60);
+
+                            const seconds =
+                                time % 60;
+
+                            timer.innerHTML =
+                                `${minutes}:${seconds < 10
+                                    ? "0" + seconds
+                                    : seconds
+                                }`;
+
+                            text.innerHTML =
+                                messages[msgIndex];
+
+                            msgIndex =
+                                (msgIndex + 1)
+                                % messages.length;
+
+                            time--;
+
+                            if (time < 0) {
+
+                                clearInterval(
+                                    meditationInterval
+                                );
+
+                                timer.innerHTML =
+                                    "Done ✅";
+
+                                text.innerHTML =
+                                    "Meditation completed peacefully 🌿";
+                            }
+
+                        }, 1000);
+                    }
+                    /* RESET MEDITATION */
+
+                    function resetMeditation() {
+
+                        clearInterval(
+                            meditationInterval
+                        );
+
+                        document.getElementById(
+                            "meditation-timer"
+                        ).innerHTML = "02:00";
+
+                        document.getElementById(
+                            "meditation-text"
+                        ).innerHTML =
+                            "Relax your mind...";
+
+                        startMeditation();
+                    }
+                    function closePopup(id) {
+
+                        document.getElementById(
+                            id
+                        ).style.display = "none";
+                    }
+
+                    /* OPEN STUDY POPUP */
+                    function openStudyRelief() {
+                        document.getElementById(
+                            "study-popup"
+                        ).style.display = "flex";
+                    }
+                    /* TIMER VARIABLE */
+                    let studyInterval;
+                    /* START TIMER */
+                    function startStudyTimer() {
+                        clearInterval(studyInterval);
+                        let time = 2700;
+                        const timer =
+                            document.getElementById(
+                                "study-timer"
+                            );
+                        const tip =
+                            document.getElementById(
+                                "study-tip"
+                            );
+                        const tips = [
+                            "💧 Drink water regularly.",
+                            "📵 Avoid mobile distractions.",
+                            "✍️ Take short notes while studying.",
+                            "🧠 Revise after every session.",
+                            "🌿 Take deep breaths and stay calm."
+                        ];
+                        let tipIndex = 0;
+                        studyInterval = setInterval(function () {
+                            const minutes =
+                                Math.floor(time / 60);
+                            const seconds =
+                                time % 60;
+                            timer.innerHTML =
+                                `${minutes}:${seconds < 10
+                                    ? "0" + seconds
+                                    : seconds
+                                }`;
+                            tip.innerHTML =
+                                tips[tipIndex];
+                            tipIndex =
+                                (tipIndex + 1)
+                                % tips.length;
+                            time--;
+                            if (time < 0) {
+                                clearInterval(
+                                    studyInterval
+                                );
+                                timer.innerHTML =
+                                    "Break Time 🌿";
+                                tip.innerHTML =
+                                    "Take a 10 minute relaxing break.";
+                            }
+                        }, 1000);
+                    }
+                    /* RESET TIMER */
+                    function resetStudyTimer() {
+
+                        clearInterval(
+                            studyInterval
+                        );
+
+                        document.getElementById(
+                            "study-timer"
+                        ).innerHTML = "45:00";
+
+                        document.getElementById(
+                            "study-tip"
+                        ).innerHTML =
+                            "Stay focused and avoid distractions.";
+                    }
+                    /* OPEN MOTIVATION */
+                    function openMotivation() {
+                        document.getElementById(
+                            "motivation-popup"
+                        ).style.display = "flex";
+                        startAutoMotivation();
+                    }
+                    /* AI VOICE MOTIVATION */
+                    function speakMotivation() {
+                        let quote =
+                            document.getElementById(
+                                "motivation-quote"
+                            ).innerText;
+                        /* REMOVE EMOJIS */
+                        quote = quote.replace(
+                            /[^\p{L}\p{N}\p{P}\p{Z}]/gu, ""
+                        );
+                        const speech =
+                            new SpeechSynthesisUtterance(
+                                quote
+                            );
+                        speech.rate = 1;
+                        speech.pitch = 1;
+                        speech.volume = 1;
+                        window.speechSynthesis.speak(
+                            speech
+                        );
+                    }
+                    /* MOTIVATION QUOTES */
+                    const motivationQuotes = {
+                        study: [
+                            "📚 Success starts with discipline.",
+                            "🧠 Study now and shine later.",
+                            "🚀 Small progress every day matters."],
+                        life: [
+                            "🌱 Every day is a fresh beginning.",
+                            "💪 Difficult roads lead to beautiful destinations.",
+                            "✨ Believe in your journey."],
+                        mental: [
+                            "🧘 Your peace matters.",
+                            "💙 Healing takes time and strength.",
+                            "🌿 Relax. Breathe. Reset."]
+                    };
+                    /* SHOW QUOTES */
+                    function showMotivation(type) {
+                        const quotes =
+                            motivationQuotes[type];
+                        const randomQuote =
+                            quotes[
+                            Math.floor(
+                                Math.random() *
+                                quotes.length
+                            )
+                            ];
+                        document.getElementById(
+                            "motivation-quote"
+                        ).innerHTML = randomQuote;
+                    }
+                    /* AUTO CHANGE QUOTES */
+                    let motivationInterval;
+                    function startAutoMotivation() {
+                        clearInterval(
+                            motivationInterval
+                        );
+                        const allQuotes = [
+                            ...motivationQuotes.study,
+                            ...motivationQuotes.life,
+                            ...motivationQuotes.mental
+                        ];
+                        motivationInterval =
+                            setInterval(function () {
+                                const randomQuote =
+                                    allQuotes[
+                                    Math.floor(
+                                        Math.random() *
+                                        allQuotes.length
+                                    )
+                                    ];
+                                document.getElementById(
+                                    "motivation-quote"
+                                ).innerHTML =
+                                    randomQuote;
+                            }, 5000);
+                    }
+
+                    /* REAL 30 MIN STUDY TIMER */
+                    let progress = 0;
+                    let totalTime = 1800;
+                    let currentTime = totalTime;
+                    let progressInterval;
+                    /* START TIMER */
+                    function startProgress() {
+                        clearInterval(
+                            progressInterval
+                        );
+                        progressInterval =
+                            setInterval(function () {
+                                if (currentTime > 0) {
+                                    currentTime--;
+                                    progress =
+                                        (
+                                            (totalTime - currentTime)
+                                            / totalTime
+                                        ) * 100;
+                                    document.getElementById(
+                                        "progress-fill"
+                                    ).style.width =
+                                        progress + "%";
+                                    const minutes =
+                                        Math.floor(
+                                            currentTime / 60
+                                        );
+                                    const seconds =
+                                        currentTime % 60;
+                                    document.getElementById(
+                                        "progress-text"
+                                    ).innerHTML =
+                                        minutes + ":" +
+                                        (seconds < 10
+                                            ? "0" + seconds
+                                            : seconds)
+                                        +
+                                        " Remaining";
+                                }
+                                else {
+                                    clearInterval(
+                                        progressInterval
+                                    );
+                                    document.getElementById(
+                                        "progress-text"
+                                    ).innerHTML =
+                                        "🏆 30 Minute Study Goal Completed!";
+                                    /* STREAK SYSTEM */
+                                    let streak =
+                                        localStorage.getItem(
+                                            "motivationStreak"
+                                        ) || 0;
+                                    streak++;
+                                    localStorage.setItem(
+                                        "motivationStreak",
+                                        streak
+                                    );
+                                    document.getElementById(
+                                        "streak-text"
+                                    ).innerHTML =
+                                        "🔥 Motivation Streak: "
+                                        + streak +
+                                        " Days";
+                                    /* BADGES */
+                                    if (streak >= 10) {
+                                        document.getElementById(
+                                            "badge-text"
+                                        ).innerHTML =
+                                            "👑 Legend Badge";
+                                    }
+                                    else if (streak >= 5) {
+                                        document.getElementById(
+                                            "badge-text"
+                                        ).innerHTML =
+                                            "🥇 Champion Badge";
+                                    }
+                                    else {
+                                        document.getElementById(
+                                            "badge-text"
+                                        ).innerHTML =
+                                            "🏆 Beginner Badge";
+                                    }
+                                }
+                            }, 1000);
+                    }
+                    /* RESET TIMER */
+                    function resetProgress() {
+                        clearInterval(
+                            progressInterval
+                        );
+                        currentTime = totalTime;
+                        progress = 0;
+                        document.getElementById(
+                            "progress-fill"
+                        ).style.width = "0%";
+                        document.getElementById(
+                            "progress-text"
+                        ).innerHTML =
+                            "30:00 Remaining";
+                    }
+                    /* LOAD SAVED STREAK */
+                    const savedStreak =
+                        localStorage.getItem(
+                            "motivationStreak"
+                        ) || 0;
+                    document.getElementById(
+                        "streak-text"
+                    ).innerHTML =
+                        "🔥 Motivation Streak: "
+                        + savedStreak +
+                        " Days";
+                    if (savedStreak >= 10) {
+                        document.getElementById(
+                            "badge-text"
+                        ).innerHTML =
+                            "👑 Legend Badge";
+                    }
+                    else if (savedStreak >= 5) {
+                        document.getElementById(
+                            "badge-text"
+                        ).innerHTML =
+                            "🥇 Champion Badge";
+                    }
+                    else {
+                        document.getElementById(
+                            "badge-text"
+                        ).innerHTML =
+                            "🏆 Beginner Badge";
+                    }
+
+                    const savedMood =
+                        localStorage.getItem(
+                            "selectedMood"
+                        );
+                    if (savedMood) {
+                        const moodEmoji =
+                            savedMood.split(" ")[0];
+                        document.getElementById(
+                            "today-mood"
+                        ).innerHTML =
+                            moodEmoji +
+                            "<p>Today</p>";
+                    }
+                    /* LOAD SAVED SUMMARY */
+
+                    const savedScore =
+                        localStorage.getItem(
+                            "moodScore"
+                        );
+
+                    const savedGoal =
+                        localStorage.getItem(
+                            "dailyGoal"
+                        );
+
+                    const savedSuggestion =
+                        localStorage.getItem(
+                            "aiSuggestion"
+                        );
+
+                    if (savedScore) {
+
+                        document.getElementById(
+                            "mood-score"
+                        ).innerHTML =
+                            savedScore;
+                    }
+
+                    if (savedGoal) {
+
+                        document.getElementById(
+                            "daily-goal"
+                        ).innerHTML =
+                            savedGoal;
+                    }
+
+                    if (savedSuggestion) {
+
+                        document.getElementById(
+                            "ai-suggestion"
+                        ).innerHTML =
+                            savedSuggestion;
+                    }
+                    /* MAIN MOOD FUNCTION */
+
+                    function setMood(mood) {
+                        document.getElementById("today-mood").innerHTML = mood;
+                        localStorage.setItem("todayMood", mood);
+                        localStorage.setItem("selectedMood", mood);
+                        updateWellnessScore(mood);
+                        /* HAPPY */
+
+                        if (mood.includes("Happy")) {
+
+                            document.getElementById("mood-score").innerHTML = "9/10";
+                            document.getElementById("sleep-hours").innerHTML = "8 Hours";
+                            document.getElementById("stress-level").innerHTML = "Low";
+                            document.getElementById("daily-goal").innerHTML =
+                                "Spread positivity today";
+                            document.getElementById("mood-insight").innerHTML =
+                                "🌸 You seem emotionally positive today."; }
+    
+
+                        /* OKAY */
+
+                        else if (mood.includes("Okay")) {
+
+                            document.getElementById("mood-score").innerHTML = "7/10";
+                            document.getElementById("sleep-hours").innerHTML = "7 Hours";
+                            document.getElementById("stress-level").innerHTML = "Moderate";
+                            document.getElementById("daily-goal").innerHTML =
+                                "Maintain balance today";
+                            document.getElementById("mood-insight").innerHTML =
+                                "✨ Your mood seems balanced today.";
+                        }
+
+                        /* SAD */
+
+                        else if (mood.includes("Sad")) {
+
+                            document.getElementById("mood-score").innerHTML = "4/10";
+                            document.getElementById("sleep-hours").innerHTML = "5 Hours";
+                            document.getElementById("stress-level").innerHTML = "High";
+                            document.getElementById("daily-goal").innerHTML =
+                                "Take proper rest today";
+                            document.getElementById("mood-insight").innerHTML =
+                                "💙 Your mind needs relaxation.";
+                        
+                        }
+
+                        /* ANXIOUS + STRESSED */
+
+                        else if (
+                            mood.includes("Anxious") ||
+                            mood.includes("Stressed")
+                        ) {
+
+                            document.getElementById("mood-score").innerHTML = "5/10";
+                            document.getElementById("sleep-hours").innerHTML = "6 Hours";
+                            document.getElementById("stress-level").innerHTML = "High";
+
+                            if (mood.includes("Anxious")) {
+
+                                document.getElementById("daily-goal").innerHTML =
+                                    "Practice deep breathing";
+
+                                document.getElementById("mood-insight").innerHTML =
+                                    "🌿 Anxiety seems higher today.";
+                            }
+
+                            else {
+
+                                document.getElementById("daily-goal").innerHTML =
+                                    "Relax and slow down today";
+
+                                document.getElementById("mood-insight").innerHTML =
+                                    "🧘 Your stress level seems high.";
+                            }
+                        }
+                    }
+                    /* LOAD SAVED INSIGHT */
+
+                    const savedInsight =
+                        localStorage.getItem(
+                            "todayMood"
+                        );
+
+                    if (savedInsight) {
+
+                        document.getElementById(
+                            "today-mood"
+                        ).textContent = savedInsight;
+                    }
+                    /* OPEN LOGIN INFO */
+
+                    function openLoginInfo() {
+
+                        document.getElementById(
+                            "login-popup"
+                        ).style.display = "flex";
+
+                        const savedPhoto =
+                            localStorage.getItem(
+                                "profilePhoto"
+                            );
+
+                        const savedAge =
+                            localStorage.getItem(
+                                "userAge"
+                            );
+
+                        const savedPhone =
+                            localStorage.getItem(
+                                "userPhone"
+                            );
+
+                        const savedEmail =
+                            localStorage.getItem(
+                                "userEmail"
+                            );
+                        if (savedPhoto) {
+                            document.getElementById(
+                                "popup-profile-pic"
+                            ).src = savedPhoto;
+                        }
+                        
+                        document.getElementById(
+                            "popup-name"
+                        ).innerHTML =
+                            localStorage.getItem("Username");
+                    
+                        document.getElementById(
+                            "popup-age"
+                        ).textContent =
+                            "Age: " + savedAge;
+
+                        document.getElementById(
+                            "popup-phone"
+                        ).innerHTML =
+                            "Phone: " + savedPhone;
+
+                        document.getElementById(
+                            "popup-email"
+                        ).innerHTML =
+                            "Email: " + savedEmail;
+
+                        document.getElementById(
+                            "popup-name"
+                        ).innerHTML =
+                            localStorage.getItem("Username");
+                    }
+                    /* OPEN DAILY REPORT */
+
+function openMoodReport(){
+
+    document.getElementById(
+        "report-popup"
+    ).style.display = "flex";
+
+    document.getElementById(
+        "report-name"
+    ).innerHTML = document.getElementById("greeting-text").innerText
+        .replace("Hello, ", "")
+        .replace("🌸", "");
+
+    document.getElementById(
+        "report-age"
+    ).innerHTML =
+        localStorage.getItem("userAge");
+
+    document.getElementById(
+        "report-phone"
+    ).innerHTML =
+        localStorage.getItem("userPhone");
+
+    document.getElementById(
+        "report-mood"
+    ).innerHTML =
+        document.getElementById(
+            "today-mood"
+        ).innerHTML;
+
+    document.getElementById(
+        "report-score"
+    ).innerHTML =
+        document.getElementById(
+            "mood-score"
+        ).innerHTML;
+
+    document.getElementById(
+        "report-sleep"
+    ).innerHTML =
+        document.getElementById(
+            "sleep-hours"
+        ).innerHTML;
+
+    document.getElementById(
+        "report-stress"
+    ).innerHTML =
+        document.getElementById(
+            "stress-level"
+        ).innerHTML;
+
+    document.getElementById(
+        "report-goal"
+    ).innerHTML =
+        document.getElementById(
+            "daily-goal"
+        ).innerHTML;
+
+    document.getElementById(
+        "report-insight"
+    ).innerHTML =
+        document.getElementById(
+            "mood-insight"
+        ).innerHTML;
+    document.getElementById(
+        "report-wellness-score"
+    ).innerHTML =
+        localStorage.getItem("wellnessScore")|| "70%";
+
+    document.getElementById(
+        "report-date"
+    ).innerHTML = new Date().toLocaleDateString();
+
+    document.getElementById(
+        "report-photo"
+    ).src =
+        localStorage.getItem(
+            "profilePhoto"
+        );
+}
+
+/* CLOSE REPORT */
+
+function closeMoodReport(){
+
+    document.getElementById(
+        "report-popup"
+    ).style.display = "none";
+}
+                    /* PRINT MOOD REPORT */
+                    function printMoodReport(){
+                    window.print();
+                    }
+                    /* CLOSE LOGIN INFO */
+
+                    function closeLoginInfo() {
+
+                        document.getElementById(
+                            "login-popup"
+                        ).style.display = "none";
+                    }
+                    /* SAVE CHAT */
+
+                    function saveChat() {
+
+                        alert(
+                            "Chat saved successfully ✅"
+                        );
+                    }
+
+                    /* CLEAR CHAT */
+
+                    function clearChat() {
+
+                        if (confirm(
+                            "Do you want to clear chat?"
+                        )) {
+
+                            localStorage.removeItem(
+                                "mindmateJournal"
+                            );
+
+                            alert(
+                                "Chat cleared 🗑️"
+                            );
+                        }
+                    }
+
+                    /* LOGOUT */
+
+                    function confirmLogout() {
+
+                        return confirm(
+                            "Are you sure you want to logout?"
+                        );
+                    }
+                    function openExitPopup() {
+
+                        document.getElementById(
+                            "exit-popup"
+                        ).style.display = "flex";
+                    }
+
+                    function closeExitPopup() {
+
+                        document.getElementById(
+                            "exit-popup"
+                        ).style.display = "none";
+                    }
+
+                    function confirmExit() {
+
+                        window.location.href = "/";
+                    }
+                    /* TIME-BASED GREETING */
+
+                    const hour =
+                        new Date().getHours();
+
+                    let greeting = "";
+
+                    if (hour >= 5 && hour < 12) {
+
+                        greeting = "Good Morning";
+
+                    }
+
+                    else if (hour >= 12 && hour < 17) {
+
+                        greeting = "Good Afternoon";
+
+                    }
+
+                    else if (hour >= 17 && hour < 21) {
+
+                        greeting = "Good Evening";
+
+                    }
+
+                    else {
+
+                        greeting = "Good Night";
+                    }
+
+                    document.getElementById(
+                        "greeting-text"
+                    ).innerHTML =
+                        greeting + ","+
+                        localStorage.getItem("Username") +
+                        " 🌸";
+
+                        const today = new Date().getDay();
+const moodMap = {
+    "Happy": "😊",
+    "Sad": "😔",
+    "Angry": "😡",
+    "Anxious": "😰",
+    "Calm": "😌",
+    "Excited": "🤩"
+};
+const selectedMood =
+localStorage.getItem("selectedMood") || "Happy";
+const moodEmoji =
+moodMap[selectedMood] || "😊";
+const days = [
+    "sun-mood",
+    "mon-mood",
+    "tue-mood",
+    "wed-mood",
+    "thu-mood",
+    "fri-mood",
+    "sat-mood"
+];
+document.getElementById(
+    days[today]
+).innerText = moodEmoji;
+    /* WELLNESS SCORE UPDATE */
+        function updateWellnessScore(mood){
+
+    let score = 70;
+
+    if(mood.includes("Happy")){
+        score = 90;
+    }
+
+    else if(mood.includes("Okay")){
+        score = 70;
+    }
+
+    else if(mood.includes("Sad")){
+        score = 45;
+    }
+
+    else if(mood.includes("Anxious")){
+        score = 30;
+    }
+
+    else if(mood.includes("Stressed")){
+        score = 15;
+    }
+
+    document.getElementById("wellnessBar")
+        .style.width = score + "%";
+
+    document.getElementById("scoreText")
+        .innerHTML = score + "%";
+    localStorage.setItem(
+        "wellnessScore",
+        score+ "%"
+    );
+    document.getElementById("report-wellness-score")
+        .innerHTML = score + "%";
+}
+                </script>
+
+                <!-- MOTIVATION POPUP -->
+                <div id="motivation-popup" class="popup-overlay">
+                    <div class="popup-box">
+                        <h2>
+                            💡 Motivation Hub
+                        </h2>
+                        <!-- CATEGORY BUTTONS -->
+                        <div class="motivation-buttons">
+                            <button onclick="showMotivation('study')">
+                                📚 Study
+                            </button>
+                            <button onclick="showMotivation('life')">
+                                🌱 Life
+                            </button>
+                            <button onclick="showMotivation('mental')">
+                                🧠 Mental Health
+                            </button>
+                        </div>
+                        <!-- QUOTE -->
+                        <h3 id="motivation-quote" class="glow-text">
+                            Believe in yourself and keep moving forward.
+                        </h3>
+                        <!-- DAILY CHALLENGE -->
+                        <div class="daily-challenge">
+                            <h3>
+                                🎯 Daily Challenge
+                            </h3>
+                            <p id="daily-challenge-text">
+                                Complete 30 minutes of focused study.
+                            </p>
+                        </div>
+                        <!-- PROGRESS -->
+                        <div class="progress-section">
+                            <h3>
+                                📈 Positivity Progress
+                            </h3>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-fill">
+                                </div>
+                            </div>
+                            <p id="progress-text">
+                                30:00 Remaining
+                            </p>
+                            <!-- STREAK -->
+                            <h3 id="streak-text">
+                                🔥 Motivation Streak: 0 Days
+                            </h3>
+                            <!-- BADGE -->
+                            <h3 id="badge-text">
+                                🏆 Beginner Badge
+                            </h3>
+                        </div>
+
+                        <div class="progress-buttons">
+                            <button onclick="startProgress()">
+                                ▶️ Start
+                            </button>
+                            <button onclick="resetProgress()">
+                                🔄 Reset
+                            </button>
+                            <button onclick="speakMotivation()">
+                                🎤 Speak
+                            </button>
+                        </div>
+
+                        <br>
+                        <button onclick="closePopup('motivation-popup')">
+                            Close
+                        </button>
+                    </div>
+                </div>
+
+                <!-- MUSIC POPUP -->
+
+                <div id="music-popup" class="popup-overlay">
+
+                    <div class="popup-box">
+
+                        <h2>
+                            🎵 Relax Music
+                        </h2>
+
+                        <p>
+                            Choose peaceful music to relax your mind.
+                        </p>
+
+                        <!-- MUSIC 1 -->
+
+                        <h3>🌿 Calm Piano</h3>
+
+                        <audio controls>
+
+                            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+                                type="audio/mp3">
+
+                        </audio>
+
+                        <br><br>
+
+                        <!-- MUSIC 2 -->
+
+                        <h3>🌧️ Rain Sound</h3>
+
+                        <audio controls>
+
+                            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+                                type="audio/mp3">
+
+                        </audio>
+
+                        <br><br>
+
+                        <!-- MUSIC 3 -->
+
+                        <h3>🌙 Sleep Relaxation</h3>
+
+                        <audio controls>
+
+                            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+                                type="audio/mp3">
+
+                        </audio>
+
+                        <br><br>
+
+                        <!-- MUSIC 4 -->
+
+                        <h3>🧘 Meditation Music</h3>
+
+                        <audio controls>
+
+                            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"
+                                type="audio/mp3">
+
+                        </audio>
+
+                        <br><br>
+
+                        <button onclick="closeMusic()">
+                            Close
+                        </button>
+
+                    </div>
+
+                </div>
+                <!-- JOURNAL POPUP -->
+
+                <div id="journal-popup" class="popup-overlay">
+
+                    <div class="popup-box">
+
+                        <h2>
+                            📖 My Journal
+                        </h2>
+
+                        <textarea id="journal-text" placeholder="Write your thoughts here..."></textarea>
+
+                        <br><br>
+
+                        <button onclick="saveJournal()">
+                            Save Journal
+                        </button>
+
+                        <button onclick="closeJournal()">
+                            Close
+                        </button>
+
+                    </div>
+
+                </div>
+                <!-- MEDITATION POPUP -->
+
+                <div id="meditation-popup" class="popup-overlay">
+
+                    <div class="popup-box">
+
+                        <h2>
+                            🧘 Guided Meditation
+                        </h2>
+
+                        <!-- BREATHING CIRCLE -->
+
+                        <div class="meditation-circle" id="meditation-circle">
+
+                            Breathe
+
+                        </div>
+
+                        <!-- TIMER -->
+
+                        <h3 id="meditation-timer">
+                            02:00
+                        </h3>
+
+                        <!-- GUIDANCE -->
+
+                        <p id="meditation-text">
+
+                            Relax your mind...
+
+                        </p>
+
+                        <!-- MUSIC -->
+
+                        <audio controls>
+
+                            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3"
+                                type="audio/mp3">
+
+                        </audio>
+
+                        <br><br>
+                        <button onclick="resetMeditation()">
+                            Reset
+                        </button>
+                        <button onclick="closePopup('meditation-popup')">
+
+                            Close
+
+                        </button>
+
+                    </div>
+
+                </div>
+                <!-- STUDY RELIEF POPUP -->
+                <div id="study-popup" class="popup-overlay">
+
+                    <div class="popup-box">
+
+                        <h2>
+                            📚 Study Relief Zone
+                        </h2>
+
+                        <!-- TIMER -->
+
+                        <h1 id="study-timer">
+                            45:00
+                        </h1>
+
+                        <!-- STUDY TIP -->
+
+                        <p id="study-tip">
+
+                            Stay focused and avoid distractions.
+
+                        </p>
+
+                        <!-- MUSIC -->
+
+                        <audio controls>
+
+                            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3"
+                                type="audio/mp3">
+
+                        </audio>
+
+                        <br><br>
+
+                        <!-- BUTTONS -->
+
+                        <button onclick="startStudyTimer()">
+
+                            Start
+
+                        </button>
+
+                        <button onclick="resetStudyTimer()">
+
+                            Reset
+
+                        </button>
+
+                        <button onclick="closePopup('study-popup')">
+
+                            Close
+
+                        </button>
+
+                    </div>
+
+                </div>
+                <!-- LOGIN INFO POPUP -->
+
+                <div id="login-popup" class="popup-overlay">
+
+                    <div class="popup-box">
+
+                        <h2>
+                            👤 Login Information
+                        </h2>
+
+                        <img id="popup-profile-pic" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                            class="popup-profile-pic">
+
+                        <h3 id="popup-name">
+                        </h3>
+
+                        <p id="popup-age">
+                            Age: --
+                        </p>
+
+                        <p id="popup-phone">
+                            Phone: --
+                        </p>
+
+                        <p id="popup-email">
+                            Email: --
+                        </p>
+
+                        <button onclick="closeLoginInfo()">
+                            Close
+                        </button>
+
+                    </div>
+
+                </div>
+                <!-- EXIT POPUP -->
+
+                <div id="exit-popup" class="popup-overlay">
+
+                    <div class="popup-box">
+
+                        <h2>
+                            ❌ Exit MindMate
+                        </h2>
+
+                        <p>
+                            Are you sure you want to exit MindMate?
+                        </p>
+
+                        <div class="exit-buttons">
+
+                            <button onclick="confirmExit()">
+                                Yes
+                            </button>
+
+                            <button onclick="closeExitPopup()">
+                                No
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                </script>
+
+                <!-- DAILY MOOD REPORT POPUP -->
+<div id="report-popup"
+     class="popup-overlay"
+     style="display:none;">
+    <div class="report-box">
+        <!-- TOP -->
+         <div class="report-top">
+
+    <div class="report-logo">
+        <img src="https://cdn-icons-png.flaticon.com/512/4616/4616734.png">
+    </div>
+
+    <img id="report-photo"
+         class="report-photo">
+
+</div>
+        <!-- TITLE -->
+        <h2 class="report-title">
+            Daily Mood Report
+        </h2>
+        <p class="report-date">
+            Date: <span id="report-date"></span>
+        </p>
+        <!-- REPORT DETAILS -->
+        <div class="report-content">
+            <p><b>Name:</b><span id="report-name"></span></p>
+
+<p><b>Age:</b><span id="report-age"></span></p>
+
+<p><b>Phone Number:</b><span id="report-phone"></span></p>
+
+<p><b>Today's Mood:</b><span id="report-mood"></span></p>
+
+<p><b>Mood Score:</b><span id="report-score"></span></p>
+
+<p><b>Sleep Hours:</b><span id="report-sleep"></span></p>
+
+<p><b>Stress:</b><span id="report-stress"></span></p>
+
+<p><b>Daily Goals:</b><span id="report-goal"></span></p>
+<p><strong>Mental Wellness Score:</strong> <span id="report-wellness-score"> 70% </span></p>
+<p><b>Mood Insight:</b><span id="report-insight"></span></p>
+        </div>
+        <!-- CLOSE BUTTON -->
+         <div class="report-buttons">
+
+        <button onclick="closeMoodReport()"
+                class="close-report-btn">
+            Close
+        </button>
+
+        <button onclick="printMoodReport()"
+                class="report-print-btn">
+            Print Report
+        </button>
+         </div>
+    </div>
+</div>
+</body>
+
+</html>

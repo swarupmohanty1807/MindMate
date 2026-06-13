@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>MindMate Login</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<script>
+
+function savePhoto(){
+
+    // SAVE AGE
+    localStorage.setItem(
+        "userAge",
+        document.querySelector(
+            'input[name="age"]'
+        ).value
+    );
+
+    // SAVE PHONE
+    localStorage.setItem(
+        "userPhone",
+        document.querySelector(
+            'input[type="tel"]'
+        ).value
+    );
+
+    // SAVE EMAIL
+    localStorage.setItem(
+        "userEmail",
+        document.querySelector(
+            'input[type="email"]'
+        ).value
+    );
+
+    localStorage.setItem(
+        "Username",
+        document.querySelector(
+            'input[name="name"]'
+        ).value
+    );
+    return true;
+}
+
+function togglePassword(){
+
+    const password =
+        document.getElementById("password");
+
+    if(password.type === "password"){
+
+        password.type = "text";
+    }
+
+    else{
+
+        password.type = "password";
+    }
+}
+
+</script>
+<body class="new-login-body">
+
+<div class="login-wrapper">
+
+    <!-- LEFT SIDE -->
+
+    <div class="left-panel">
+
+        <div class="brand-top">
+
+            <div class="new-logo">
+
+                <img src="https://cdn-icons-png.flaticon.com/512/4616/4616734.png">
+
+            </div>
+
+            <div>
+
+                <h1>MindMate</h1>
+
+                <p>Your AI Wellness Companion</p>
+
+            </div>
+
+        </div>
+
+        <div class="hero-text">
+
+            <h2>
+                You're Not Alone.
+            </h2>
+
+            <h3>
+                We're Here for You.
+            </h3>
+
+        </div>
+
+        <div class="line"></div>
+
+        <div class="about-text">
+
+            MindMate is an AI-powered chatbot that listens,
+            understands and supports your mental wellness journey.
+
+        </div>
+
+        <!-- FEATURES -->
+
+        <div class="feature-box">
+
+            <div class="feature-icon">
+                💜
+            </div>
+
+            <div>
+
+                <h4>Always Here</h4>
+
+                <p>24/7 support whenever you need help.</p>
+
+            </div>
+
+        </div>
+
+        <div class="feature-box">
+
+            <div class="feature-icon">
+                🔒
+            </div>
+
+            <div>
+
+                <h4>Private & Secure</h4>
+
+                <p>Your conversations are safe.</p>
+
+            </div>
+
+        </div>
+
+        <div class="feature-box">
+
+            <div class="feature-icon">
+                🌱
+            </div>
+
+            <div>
+
+                <h4>Better Every Day</h4>
+
+                <p>Guidance to help you feel your best.</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- RIGHT SIDE -->
+
+    <div class="right-panel glass-card">
+
+        <div class="form-logo">
+
+            <img src="https://cdn-icons-png.flaticon.com/512/4616/4616734.png">
+
+        </div>
+
+        <h1>Create Your Account</h1>
+
+        <!-- FORM -->
+
+        <form id="login-form">
+
+            <!-- FULL NAME -->
+
+            <label>Full Name</label>
+
+            <div class="input-box">
+
+                <span>👤</span>
+
+                <input type="text"
+                    id="username"
+                       name="name"
+                       placeholder="Enter your full name"
+                       required>
+
+            </div>
+
+            <!-- AGE -->
+
+            <label>Age</label>
+
+            <div class="input-box">
+
+                <span>🎂</span>
+
+                <input type="number"
+                       name="age"
+                       placeholder="Enter age"
+                       required>
+
+            </div>
+
+            <!-- PROFILE PHOTO -->
+
+            <label>Profile Photo</label>
+
+            <label for="photo-upload"
+                   class="upload-btn">
+
+                📷 Choose Photo
+
+            </label>
+
+            <input type="file"
+                   id="photo-upload"
+                   accept="image/*"
+                   hidden
+                   required>
+            <p id="upload-success" class="upload-success"></p>
+            <!-- PHONE -->
+
+            <label>Phone Number</label>
+
+            <div class="input-box">
+
+                <span>📞</span>
+
+                <input type="tel"
+                       placeholder="Enter phone number"
+                       required>
+
+            </div>
+
+            <!-- EMAIL -->
+
+            <label>Email</label>
+
+            <div class="input-box">
+
+                <span>✉️</span>
+
+                <input type="email"
+                       placeholder="Enter your email"
+                       required>
+
+            </div>
+
+            <!-- PASSWORD -->
+
+            <label class="input-label">
+                Password
+            </label>
+
+            <div class="input-group password-group">
+
+                <span class="input-icon">
+                    🔒
+                </span>
+
+                <input type="password"
+                       id="password"
+                       placeholder="Enter password"
+                       required>
+
+                <span class="eye-icon"
+                      onclick="togglePassword()">
+                      👁️
+                </span>
+
+            </div>
+
+            <!-- BUTTON -->
+
+            <button type="submit">
+
+                Save & Continue
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+<script>
+
+/* PHOTO UPLOAD */
+
+const photoInput =
+    document.getElementById(
+        "photo-upload"
+    );
+
+photoInput.addEventListener(
+    "change",
+    function(){
+
+        const file =
+            photoInput.files[0];
+
+        if(file){
+
+            const reader =
+                new FileReader();
+
+            reader.onload =
+            function(e){
+
+                localStorage.setItem(
+                    "profilePhoto",
+                    e.target.result
+                );
+
+                document.getElementById(
+                    "upload-success"
+                ).innerHTML =
+                    "✅ Photo uploaded successfully";
+            };
+
+            reader.readAsDataURL(file);
+        }
+    }
+);
+
+/* FORM VALIDATION */
+function savePhoto(){
+
+    const name =
+        document.querySelector(
+            'input[name="name"]'
+        ).value;
+
+    const age =
+        document.querySelector(
+            'input[name="age"]'
+        ).value;
+
+    const phone =
+        document.querySelector(
+            'input[type="tel"]'
+        ).value;
+
+    const email =
+        document.querySelector(
+            'input[type="email"]'
+        ).value;
+
+    const password =
+        document.getElementById(
+            "password"
+        ).value;
+
+    const photo =
+        document.getElementById(
+            "photo-upload"
+        ).files[0];
+
+    if(
+        name === "" ||
+        age === "" ||
+        phone === "" ||
+        email === "" ||
+        password === "" ||
+        !photo
+    ){
+
+        alert(
+            "Please fill all details properly"
+        );
+
+        return;
+    }
+
+    // SAVE DATA
+
+    localStorage.setItem(
+        "userAge",
+        age
+    );
+
+    localStorage.setItem(
+        "userPhone",
+        phone
+    );
+
+    localStorage.setItem(
+        "userEmail",
+        email
+    );
+    localStorage.setItem(
+        "mindmateUser",
+        name
+    );
+    // GO TO HOME PAGE
+    localStorage.setItem(
+        "userName",
+        name
+    );
+    window.location.href =
+        "/home?name=" + encodeURIComponent(name);
+}
+</script>
+<script>
+
+document.getElementById(
+    "login-form"
+).addEventListener(
+    "submit",
+    function(e){
+
+        e.preventDefault();
+
+        savePhoto();
+    }
+);
+
+</script>
+</body>
+</html>

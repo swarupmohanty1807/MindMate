@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>MindMate Chatbot</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="chat-wrapper">
+
+    <!-- SIDEBAR TOGGLE BUTTON -->
+<div class="menu-toggle"
+     onclick="toggleSidebar()">
+    ☰
+</div>
+<!-- SIDEBAR -->
+<div class="chat-sidebar"
+     id="sidebar">
+    <!--LOGO-->
+    <div class="sidebar-logo">
+        <img src="https://cdn-icons-png.flaticon.com/512/4616/4616734.png">
+    <h2>
+        MindMate
+    </h2>
+    </div>
+    <hr class="sidebar-line">
+
+    <a href="/home" class="sidebar-btn">
+        🏠 Back To Home
+    </a>
+
+    <button class="sidebar-btn"
+        onclick="newChat()">
+        ➕ New Chat
+    </button>
+
+    <button class="sidebar-btn"
+        onclick="saveChat()">
+        💾 Save Chat
+    </button>
+    <div id="savedChatsList"></div>
+
+</div>
+    <!-- TOP SECTION -->
+    <div class="top-section">
+
+        <img src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png"
+             class="robot">
+
+        <div class="welcome-text">
+
+    <h1 id="chat-username">
+        Hello 🌸
+    </h1>
+
+    <h2>MindMate welcomes you</h2>
+
+</div>
+        <p class="sub-text">
+            Your AI mental wellness companion
+        </p>
+
+    </div>
+
+    <!-- CHAT AREA -->
+    <div id="chat-box">
+        <div id="messages-container"></div>
+
+    <!-- INPUT AREA -->
+    <div class="input-area">
+
+        <input type="text"
+               id="user-input"
+               placeholder="Ask MindMate anything..."
+               autocomplete="off"
+               onkeydown="handleEnter(event)">
+
+        <!-- SEND BUTTON -->
+        <button onclick="startVoiceInput()">
+            🎤
+        </button>
+        <button onclick="sendMessage()">
+            Send
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+/* LOAD CHAT USERNAME */
+const savedUsername =
+    localStorage.getItem(
+        "mindmateUser"
+    );
+if(savedUsername){
+    document.getElementById(
+        "chat-username"
+    ).innerHTML =
+        "Hello " +
+        savedUsername;
+}
+async function sendMessage() {
+    let userInput =
+        document.getElementById("user-input");
+    let message = userInput.value.trim();
+    if(message === "") {
+        return;
+    }
+
+    let chatBox =
+        document.getElementById("chat-box");
+
+    // USER MESSAGE
+    document.getElementById(
+        "messages-container"
+    ).innerHTML += `
+        <div class="user-message">
+            ${message}
+        </div>
+    `;
+
+    // AUTO SCROLL
+    chatBox.scrollTop =
+        chatBox.scrollHeight;
+
+    // CLEAR INPUT
+    userInput.value = "";
+    userInput.focus();
+
+    /* CREATE THINKING LOADER */
+let loader = document.createElement("div");
+loader.id = "thinking-loader";
+loader.innerHTML = `
+<div class="thinking-bubble">
+    MindMate is thinking
+    <span class="dot-one">.</span>
+    <span class="dot-two">.</span>
+    <span class="dot-three">.</span>
+</div>
+`;
+chatBox.appendChild(loader);
+
+/* AUTO SCROLL */
+chatBox.scrollTop =
+chatBox.scrollHeight;
+
+    // SEND TO FLASK
+    let response = await fetch("/get_response", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+            message: message,
+            username: localStorage.getItem("userName")
+        })
+
+    });
+    /* SMALL AI THINKING DELAY */
+        await new Promise(resolve =>
+             setTimeout(resolve, 1800)
+        );
+    let data = await response.json();
+
+    /* REMOVE THINKING LOADER */
+        document.getElementById(
+            "thinking-loader"
+        ).remove();
+
+    // BOT MESSAGE
+    document.getElementById(
+        "messages-container"
+    ).innerHTML += `
+        <div class="bot-message">
+            ${data.response}
+        </div>
+    `;
+// NOVA VOICE SPEAK
+let speech = new SpeechSynthesisUtterance(
+    data.response
+);
+
+speech.lang = "en-US";
+
+speech.rate = 1;
+
+speech.pitch = 1;
+
+window.speechSynthesis.speak(speech);
+    // AUTO SCROLL
+    chatBox.scrollTop =
+        chatBox.scrollHeight;
+}
+
+/* HANDLE ENTER KEY */
+function handleEnter(event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        sendMessage();
+    }
+}
+// VOICE INPUT FEATURE
+function startVoiceInput() {
+
+    // CHECK BROWSER SUPPORT
+    if (!('webkitSpeechRecognition' in window)) {
+
+        alert("Voice recognition not supported in this browser");
+
+        return;
+    }
+
+    // CREATE RECOGNITION
+    const recognition =
+        new webkitSpeechRecognition();
+
+    recognition.lang = "en-US";
+
+    recognition.continuous = false;
+
+    recognition.interimResults = false;
+
+    // START LISTENING
+    recognition.start();
+
+    // WHEN USER SPEAKS
+    recognition.onresult = function(event) {
+
+        let transcript =
+            event.results[0][0].transcript;
+
+        // PUT TEXT IN INPUT BOX
+        document.getElementById(
+            "user-input"
+        ).value = transcript;
+
+        // AUTO SEND MESSAGE
+        sendMessage();
+    };
+
+    // ERROR HANDLING
+    recognition.onerror = function(event) {
+
+        console.log(
+            "Voice Error:",
+            event.error
+        );
+    };
+}
+// SIDEBAR TOGGLE
+function toggleSidebar(){
+
+    document.getElementById(
+        "sidebar"
+    ).classList.toggle("active");
+
+}
+function newChat(){
+
+    // CLEAR CHAT AREA
+    document.getElementById(
+        "messages-container"
+    ).innerHTML = "";
+
+    // CLEAR INPUT
+    document.getElementById(
+        "user-input"
+    ).value = "";
+
+    // CLOSE SIDEBAR
+    document.getElementById(
+        "sidebar"
+    ).classList.remove("active");
+}
+function saveChat(){
+
+    // GET CHAT CONTENT
+    let chatContent =
+        document.getElementById(
+            "messages-container"
+        ).innerHTML;
+
+    // DON'T SAVE EMPTY CHAT
+    if(chatContent.trim() === ""){
+        alert("No chat to save");
+        return;
+    }
+
+    // GET OLD SAVED CHATS
+    let savedChats =
+        JSON.parse(
+            localStorage.getItem(
+                "mindmateChats"
+            )
+        ) || [];
+
+    // CREATE UNIQUE TITLE
+    let chatNumber =
+        savedChats.length + 1;
+
+        // GET ALL USER MESSAGES
+    let allMessages =
+    document.querySelectorAll(
+        ".user-message"
+    );
+
+// DEFAULT TITLE
+let meaningfulTitle =
+    "New Chat";
+
+// GREETING WORDS
+let greetings = [
+    "hi",
+    "hello",
+    "hey",
+    "hello mindmate",
+    "hi mindmate",
+    "hey mindmate"
+];
+
+// FIND LAST MEANINGFUL MESSAGE
+for(let i = allMessages.length - 1;
+    i >= 0;
+    i--){
+
+    let text =
+        allMessages[i]
+        .innerText
+        .toLowerCase()
+        .trim();
+
+    if(!greetings.includes(text)){
+
+        meaningfulTitle =
+            allMessages[i]
+            .innerText
+            .substring(0, 30);
+
+        break;
+    }
+}
+
+    // CREATE NEW CHAT OBJECT
+    let newSavedChat = {
+        id: Date.now(),
+        title: meaningfulTitle,
+        content: chatContent,
+        dateTime: new Date().toLocaleString()
+    };
+
+    // ADD NEW CHAT
+    savedChats.push(
+        newSavedChat
+    );
+
+    // SAVE ALL CHATS
+    localStorage.setItem(
+        "mindmateChats",
+        JSON.stringify(savedChats)
+    );
+
+    alert(
+        "Chat saved successfully 🌸"
+    );
+
+    // REFRESH SAVED CHAT LIST
+    displaySavedChats();
+}
+function displaySavedChats(){
+
+    let savedChats =
+        JSON.parse(
+            localStorage.getItem(
+                "mindmateChats"
+            )
+        ) || [];
+
+    let historyContainer =
+        document.getElementById(
+            "savedChatsList"
+        );
+
+    // CLEAR OLD LIST
+    historyContainer.innerHTML = "";
+
+    // LOOP ALL CHATS
+    savedChats.forEach(chat => {
+        historyContainer.innerHTML += `
+            <div class="saved-chat-item">
+            <div class="chat-info"
+     onclick="loadChat(${chat.id})">
+
+    <div class="chat-title">
+        ${chat.title}
+    </div>
+
+    <div class="chat-time">
+        ${chat.dateTime}
+    </div>
+
+    </div>
+    <button
+                class="delete-btn"
+                onclick="deleteChat(${chat.id})">
+                 ❌
+            </button>
+            </div>
+            `;
+    });
+}
+function loadChat(chatId){
+
+    let savedChats =
+        JSON.parse(
+            localStorage.getItem(
+                "mindmateChats"
+            )
+        ) || [];
+
+    let selectedChat =
+        savedChats.find(
+            chat => chat.id === chatId
+        );
+
+    if(selectedChat){
+
+        document.getElementById(
+            "messages-container"
+        ).innerHTML =
+            selectedChat.content;
+    }
+}
+function deleteChat(chatId){
+
+    // GET ALL SAVED CHATS
+    let savedChats =
+        JSON.parse(
+            localStorage.getItem(
+                "mindmateChats"
+            )
+        ) || [];
+
+    // REMOVE SELECTED CHAT
+    savedChats =
+        savedChats.filter(
+            chat => chat.id !== chatId
+        );
+
+    // SAVE UPDATED CHATS
+    localStorage.setItem(
+        "mindmateChats",
+        JSON.stringify(savedChats)
+    );
+
+    // REFRESH SIDEBAR
+    displaySavedChats();
+}
+</script>
+
+</body>
+</html>
